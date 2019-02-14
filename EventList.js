@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList, Text} from 'react-native';
+import EventCard from './EventCard';
 
 class EventList extends Component {
     state = {
@@ -7,7 +8,10 @@ class EventList extends Component {
     }
 
     componentDidMount() {
-        const events = require('./db.json').events;
+        const events = require('./db.json').events.map(e => ({
+            ...e,
+            date: new Date(e.date)
+        }));
         this.setState({events});
     }
 
@@ -15,7 +19,7 @@ class EventList extends Component {
         return (
             <FlatList
                 data={this.state.events}
-                renderItem={({item})=> <Text>{item.title}</Text>}
+                renderItem={({item}) => <EventCard event={item}/>}
                 keyExtractor={item => item.id}
             />
         );
