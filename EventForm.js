@@ -22,14 +22,23 @@ class EventForm extends Component {
     };
 
     handleAddPress = () => {
+        console.log(this.state);
         this.props.navigation.goBack();
+    }
+
+    handleChangeTitle = (value) => {
+        this.setState({ title: value });
     }
 
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.fieldContainer}>
-                    <TextInput style={styles.text}/>
+                    <TextInput style={styles.text}
+                        placeholder="Event title"
+                        spellCheck={false}
+                        value={this.state.value}
+                        onChangeText={this.handleChangeTitle} />
                 </View>
                 <TouchableHighlight onPress={this.handleAddPress}>
                     <Text>Add</Text>
