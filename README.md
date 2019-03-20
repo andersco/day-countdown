@@ -5,6 +5,8 @@ A react native countdown application
     ```
     npm install -g expo-cli
     ```
+  * If behind the windows firewall, open up ports for expo
+    * Create inbound and outbound rules for TCP ports 19000-19003
   * Install Android Studio
   * Install Intel Emulator Excellerator
     * Ensure it is installed with the SDK manager in Android Studio
@@ -22,3 +24,7 @@ A react native countdown application
   * In another browser tab, open the developer tools and navigate to `http://localhost:19001/debugger-ui/`
   * In the simulator, enter `Ctrl+m`, and select `Debug JS Session Remotely`
   * In the browser tab developer tools console, if there is an error about CORS, replace `localhost` in the browser with the IP address in the error, such as `192.168.86.37`
+  * In a terminal run the debug api server
+    ```
+    npm run server
+    ```

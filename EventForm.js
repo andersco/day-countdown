@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
-import { DateTimePicker } from 'react-native-modal-datetime-picker';
-import { formatDateTime } from './api';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import { formatDateTime, saveEvent } from './api';
 
 const styles = StyleSheet.create({
     fieldContainer: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         margin: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5
+        borderRadius: 5,
     },
     buttonText: {
         color: '#fff',
@@ -42,8 +42,8 @@ class EventForm extends Component {
     };
 
     handleAddPress = () => {
-        console.log(this.state);
-        this.props.navigation.goBack();
+        saveEvent(this.state).then(() =>
+            this.props.navigation.goBack());
     }
 
     handleChangeTitle = (value) => {
@@ -52,6 +52,17 @@ class EventForm extends Component {
 
     handleDatePressed = () => {
         this.setState({ showDatePicker: true });
+    }
+
+    handleDatePicked = (date) => {
+        this.setState({
+            date
+        });
+        this.handleDateHide();
+    }
+
+    handleDateHide = () => {
+        this.setState({ showDatePicker: false });
     }
 
     render() {
@@ -68,7 +79,8 @@ class EventForm extends Component {
                         spellCheck={false}
                         value={formatDateTime(this.state.date.toString())}
                         editable={!this.state.showDatePicker}
-                        onFocus={this.handleDatePress} />
+                        onFocus={this.handleDatePressed} />
+                    <DateTimePicker isVisible={this.state.showDatePicker} mode="datetime" onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
                 </View>
                 <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
                     <Text style={styles.buttonText}>Add</Text>
