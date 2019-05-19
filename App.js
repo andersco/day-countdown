@@ -1,8 +1,15 @@
-import EventList from './EventList';
-import EventForm from './EventForm';
+import EventList from './Components/EventList';
+import EventForm from './Components/EventForm';
+import SignIn from './Components/SignIn';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const AppNavigator = createStackNavigator({
+  signIn: {
+    screen: SignIn,
+    navigationOptions: () => ({
+      title: 'Sign In'
+    })
+  },
   list: {
     screen: EventList,
     navigationOptions: () => ({
