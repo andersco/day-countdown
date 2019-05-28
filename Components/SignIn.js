@@ -10,13 +10,17 @@ class SignIn extends Component {
         super(props);
         this.state = {
             signedIn: false,
-            name: "a",
+            name: "d",
             photoUrl: ""
         }
     }
     signIn = async () => {
         try {
-            const { type, accessToken, user } = await Google.logInAsync({ androidClientId });
+            let config = {
+                clientId: androidClientId,
+                scopes: ['https://www.googleapis.com/auth/drive.appdata']
+            }
+            const { type, accessToken, user } = await Google.logInAsync(config);
             if (type === 'success') {
                 await this.setState({
                     signedIn: true,
@@ -26,6 +30,7 @@ class SignIn extends Component {
                 const {navigate} = this.props.navigation;
                 navigate('list', {accessToken: accessToken});
             } else {
+                console.log("type is: " + type);
                 console.log("cancelled");
             }
         } catch (e) {

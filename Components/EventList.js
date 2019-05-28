@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
-import { getEvents } from '../api';
+import { createFile } from '../googleDrive';
 
 const styles = StyleSheet.create({
     list: {
@@ -18,17 +18,20 @@ class EventList extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                events: this.state.events.map(evt => ({
-                    ...evt,
-                    timer: Date.now(),
-                })),
-            });
-        }, 1000);
-        getEvents().then(events => {
-            this.setState({ events })
-        });
+        const { navigation } = this.props;
+        apiToken = navigation.getParam('accessToken', 'NO-accessToken');
+        createFile(apiToken);
+        // setInterval(() => {
+        //     this.setState({
+        //         events: this.state.events.map(evt => ({
+        //             ...evt,
+        //             timer: Date.now(),
+        //         })),
+        //     });
+        // }, 1000);
+        // getEvents().then(events => {
+        //     this.setState({ events })
+        // });
     }
 
     handleAddEvent = () => {

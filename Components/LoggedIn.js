@@ -6,7 +6,6 @@ export default class LoggedIn extends Component {
         super(props);
     }
     render() {
-        //alert(this.props.photoUrl);
         let imageSource = { uri: this.props.photoUrl}
         return (
             <View>
