@@ -4,36 +4,40 @@ let apiToken = null
 const boundaryString = 'countdown_boundary' // can be anything unique, needed for multipart upload https://developers.google.com/drive/v3/web/multipart-upload
 
 // create file to upload
-async function createFile (apiToken) {
-    this.apiToken = apiToken;
-    const content = [
-        {
-            id: 1,
-            text: 'transaction memo list',
-            name: 'dang'
-        },
-        {
-            id: 2,
-            text: 'transaction memo list',
-            name: 'dang 23'
-        }
-    ]
-    this.getFile().then((file) => {
-        console.log('file', file)
+async function loadDataFile(apiToken) {
+    try {
+        this.apiToken = apiToken;
+        let content = [
+            {
+                "events": [
+                    {
+                        "title": "From google drive",
+                        "date": "2019-06-15T00:00:00.000Z",
+                        "id": "05dafc66-bd91-43a0-a752-4dc40f039143"
+                    }
+                ]
+            }
+        ];
+        let file = await getFile();
         if (file) {
-            this.uploadFile(JSON.stringify(content), file.id)
+            // this.uploadFile(JSON.stringify(content), file.id)
+            console.log('found file');
+            console.log('file', file);
+            let fileId = file.id;
+            content = getFileContent(fileId);
         } else {
+            console.log('file not found...uploading');
             this.uploadFile(JSON.stringify(content))
         }
-    }).catch((error) => {
-        console.log('error', error)
-    })
+        return content;
+    } catch (error) {
+        console.log('error: ' + error);
+    }
 }
 
 getFile = () => {
     const qParams = encodeURIComponent("name = 'data.json'");
     const options = this.configureGetOptions();
-    console.log('options', this.apiToken);
     return fetch(`${url}/files?q=${qParams}&spaces=appDataFolder`, options)
         .then(this.parseAndHandleErrors)
         .then((body) => {
@@ -42,6 +46,26 @@ getFile = () => {
             return null
         })
 }
+
+getFileContent = async (id) => {
+    try {
+        console.log('getting file ' + id);
+        const options = this.configureGetOptions();
+        let data = await fetch(`${url}/files/${id}?alt=media`, options);
+        let body = await this.parseAndHandleErrors(data);
+        console.log('file content:  ');
+        console.log(body)
+        if (body) {
+            body = JSON.parse(body);
+            if (body.length > 0 && body[0].events) {
+                return body[0].events;
+            }
+        }
+        throw Error("invalid content in file");
+    } catch (error) {
+        console.log("Error: " + error);
+    }
+};
 
 // upload file to google drive
 uploadFile = (content, existingFileId) => {
@@ -57,7 +81,6 @@ uploadFile = (content, existingFileId) => {
 parseAndHandleErrors = async (response) => {
     if (response.ok) {
         let data = await response.json();
-        console.log(data);
         return data
     } else {
         let message = await response.text();
@@ -106,4 +129,4 @@ configurePostOptions = (bodyLength, isUpdate = false) => {
     }
 }
 
-export { createFile };
+export { loadDataFile };

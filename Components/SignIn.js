@@ -10,7 +10,7 @@ class SignIn extends Component {
         super(props);
         this.state = {
             signedIn: false,
-            name: "d",
+            name: "",
             photoUrl: ""
         }
     }
