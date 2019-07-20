@@ -24,7 +24,3 @@ A react native countdown application
   * In the simulator, enter `Ctrl+m`, and select `Debug JS Session Remotely`
   * A browser tab will open that you can open developer tools on to debug the JS
     * If there is an error about CORS, replace `localhost` in the browser with the IP address in the error, such as `192.168.86.37`
-  * In a terminal run the debug api server
-    ```
-    npm run server
-    ```
