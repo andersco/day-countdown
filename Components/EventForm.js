@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { formatDateTime, saveEvent } from '../api';
+import { formatDateTime, saveEvent } from '../utils';
+import { saveDataFile } from '../googleDrive';
 
 const styles = StyleSheet.create({
     fieldContainer: {
@@ -37,12 +38,19 @@ const styles = StyleSheet.create({
 
 class EventForm extends Component {
     state = {
+        apiToken: null,
         title: null,
         date: ''
     };
 
+    async componentDidMount() {
+        const { navigation } = this.props;
+        apiToken = navigation.getParam('apiToken', 'NO-accessToken');
+        await this.setState({ apiToken: apiToken });
+    }
+
     handleAddPress = () => {
-        saveEvent(this.state).then(() =>
+        saveDataFile(this.state).then(() =>
             this.props.navigation.goBack());
     }
 

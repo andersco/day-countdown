@@ -9,8 +9,7 @@ export default class LoggedIn extends Component {
         let imageSource = { uri: this.props.photoUrl}
         return (
             <View>
-                <Image style={{ width: 50, height: 50 }} source={imageSource} />
-                <Text>{this.props.name} signed In</Text>
+                <Text>Signed In</Text>
             </View>
         );
     }

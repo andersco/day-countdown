@@ -9,9 +9,7 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            signedIn: false,
-            name: "",
-            photoUrl: ""
+            signedIn: false
         }
     }
     signIn = async () => {
@@ -23,15 +21,12 @@ class SignIn extends Component {
             const { type, accessToken, user } = await Google.logInAsync(config);
             if (type === 'success') {
                 await this.setState({
-                    signedIn: true,
-                    name: user.name,
-                    photoUrl: user.photoUrl
+                    signedIn: true
                 });
                 const {navigate} = this.props.navigation;
                 navigate('list', {accessToken: accessToken});
             } else {
-                console.log("type is: " + type);
-                console.log("cancelled");
+                console.log("cancelled. type is: " + type);
             }
         } catch (e) {
             console.log("error", e);
@@ -40,7 +35,7 @@ class SignIn extends Component {
     render() {
         return (
             <View>
-                {this.state.signedIn ? (<LoggedIn name={this.state.name} photoUrl={this.state.photoUrl} />) : (<LoggedOut signIn={this.signIn} />)}
+                {this.state.signedIn ? (<LoggedIn />) : (<LoggedOut signIn={this.signIn} />)}
             </View>
         );
     }

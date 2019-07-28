@@ -14,12 +14,14 @@ const styles = StyleSheet.create({
 
 class EventList extends Component {
     state = {
+        apiToken: null,
         events: []
     }
 
     async componentDidMount() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
+        await this.setState({ apiToken: apiToken });
         let events = await loadDataFile(apiToken);
         console.log('events:  ' + JSON.stringify(events));
         events = events.map(e => ({ ...e, date: new Date(e.date) }));
@@ -32,11 +34,10 @@ class EventList extends Component {
                 })),
             });
         }, 1000);
-
     }
 
     handleAddEvent = () => {
-        this.props.navigation.navigate('form');
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken });
     }
 
     render() {

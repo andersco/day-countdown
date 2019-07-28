@@ -9,13 +9,7 @@ async function loadDataFile(apiToken) {
         this.apiToken = apiToken;
         let content = [
             {
-                "events": [
-                    {
-                        "title": "From google drive",
-                        "date": "2019-06-15T00:00:00.000Z",
-                        "id": "05dafc66-bd91-43a0-a752-4dc40f039143"
-                    }
-                ]
+                "events": []
             }
         ];
         let file = await getFile();
@@ -32,6 +26,22 @@ async function loadDataFile(apiToken) {
         return content;
     } catch (error) {
         console.log('error: ' + error);
+    }
+}
+
+async function saveDataFile({ apiToken, title, date }) {
+    // alert(`save ${apiToken}, ${title} ${date}`);
+    try {
+        let file = await getFile();
+        if (file) {
+            let fileId = file.id;
+            let content = getFileContent(fileId); // returns JSON
+            alert(JSON.stringify(content)); // TODO add new content and save
+        } else {
+            throw new Error('Data file not found');
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -129,4 +139,4 @@ configurePostOptions = (bodyLength, isUpdate = false) => {
     }
 }
 
-export { loadDataFile };
+export { loadDataFile, saveDataFile };
