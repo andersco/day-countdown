@@ -23,8 +23,8 @@ class EventList extends Component {
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
         await this.setState({ apiToken: apiToken });
         let events = await loadDataFile(apiToken);
-        console.log('events:  ' + JSON.stringify(events));
-        events = events.map(e => ({ ...e, date: new Date(e.date) }));
+        console.log('events :  ' + JSON.stringify(events));
+        events = events.events.map(e => ({ ...e, date: new Date(e.date) }));
         await this.setState({ events });
         setInterval(() => {
             this.setState({
