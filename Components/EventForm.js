@@ -46,6 +46,11 @@ class EventForm extends Component {
     async componentDidMount() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('apiToken', 'NO-accessToken');
+        id = navigation.getParam('id', '');
+        if (id) {
+            console.log('id passed, looking up...');
+            await this.setState({ id: id });
+        }
         await this.setState({ apiToken: apiToken });
     }
 
@@ -91,8 +96,13 @@ class EventForm extends Component {
                     <DateTimePicker isVisible={this.state.showDatePicker} mode="datetime" onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
                 </View>
                 <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
-                    <Text style={styles.buttonText}>Add</Text>
+                    <Text style={styles.buttonText}>Save</Text>
                 </TouchableHighlight>
+                {this.state.id &&
+                    <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
+                        <Text style={styles.buttonText}>Delete</Text>
+                    </TouchableHighlight>
+                }
             </View>
         );
     }

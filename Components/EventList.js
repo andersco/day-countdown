@@ -18,6 +18,14 @@ class EventList extends Component {
         events: []
     }
 
+    handleAddEvent = () => {
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken });
+    }
+
+    handleEditEvent = (id) => {
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id });
+    }
+
     async componentDidMount() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
@@ -36,17 +44,13 @@ class EventList extends Component {
         }, 1000);
     }
 
-    handleAddEvent = () => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken });
-    }
-
     render() {
         return [
             <FlatList
                 key="flatlist"
                 style={styles.list}
                 data={this.state.events}
-                renderItem={({ item }) => <EventCard event={item} />}
+                renderItem={({ item }) => <EventCard event={item} onPress={this.handleEditEvent} />}
                 keyExtractor={item => item.id}
             />,
             <ActionButton key="fab" onPress={this.handleAddEvent} buttonColor="rgba(231,76,60,1)" />

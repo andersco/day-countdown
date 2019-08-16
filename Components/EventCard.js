@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { formatDate, getCountdownParts } from '../utils';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     card: {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function EventCard({ event }) {
+export default function EventCard({ event, onPress }) {
     const {
         days,
         hours,
@@ -64,7 +65,7 @@ export default function EventCard({ event }) {
     } = getCountdownParts(event.date);
 
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => onPress(event.id)}>
             <View style={styles.cardHeader}>
                 <Text style={styles.date}>{formatDate(event.date)}</Text>
                 <Text style={styles.title}>{event.title}</Text>
@@ -87,7 +88,7 @@ export default function EventCard({ event }) {
                     <Text style={styles.counterLabel}>SECONDS</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

@@ -32,7 +32,7 @@ async function saveDataFile({ apiToken, title, date }) {
             let fileId = file.id;
             let content = await getFileContent(fileId); // returns JSON
             content.events.push({"title": title, "date": date, id: uuid()})
-            this.uploadFile(JSON.stringify(content), file.id)
+            await this.uploadFile(JSON.stringify(content), file.id)
         } else {
             throw new Error('Data file not found');
         }

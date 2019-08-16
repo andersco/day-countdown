@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
-import LoggedIn from './LoggedIn';
+import { View, ActivityIndicator } from 'react-native';
 import LoggedOut from './LoggedOut';
 import { Google } from "expo";
 import { androidClientId } from '../secrets.json';
@@ -20,6 +19,7 @@ class SignIn extends Component {
             }
             const { type, accessToken, user } = await Google.logInAsync(config);
             if (type === 'success') {
+                console.log('successfully logged in')
                 await this.setState({
                     signedIn: true
                 });
@@ -35,7 +35,7 @@ class SignIn extends Component {
     render() {
         return (
             <View>
-                {this.state.signedIn ? (<LoggedIn />) : (<LoggedOut signIn={this.signIn} />)}
+                {this.state.signedIn ? (<ActivityIndicator size="large" color="#0000ff" animating={true} />) : (<LoggedOut signIn = {this.signIn}/>)}
             </View>
         );
     }
