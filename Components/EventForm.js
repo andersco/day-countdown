@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { formatDateTime, saveEvent } from '../utils';
-import { saveDataFile } from '../googleDrive';
+import eventsDB from '../eventsDB';
 
 const styles = StyleSheet.create({
     fieldContainer: {
@@ -37,15 +37,20 @@ const styles = StyleSheet.create({
 });
 
 class EventForm extends Component {
-    state = {
-        apiToken: null,
-        title: null,
-        date: ''
-    };
+    constructor(props) {
+        super(props);
+        this.db = null;
+        this.state = {
+            apiToken: null,
+            title: null,
+            date: ''
+        };
+    }
 
     async componentDidMount() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('apiToken', 'NO-accessToken');
+        this.db = new eventsDB(apiToken);
         id = navigation.getParam('id', '');
         if (id) {
             console.log('id passed, looking up...');
@@ -54,9 +59,14 @@ class EventForm extends Component {
         await this.setState({ apiToken: apiToken });
     }
 
-    handleAddPress = () => {
-        saveDataFile(this.state).then(() =>
-            this.props.navigation.goBack());
+    handleAddPress = async () => {
+        await this.db.createEvent(this.state);
+        this.props.navigation.goBack();
+    }
+
+    handleDeletePress = async () => {
+        await this.db.deleteEvent(this.state.id);
+        this.props.navigation.goBack();
     }
 
     handleChangeTitle = (value) => {
@@ -99,7 +109,7 @@ class EventForm extends Component {
                     <Text style={styles.buttonText}>Save</Text>
                 </TouchableHighlight>
                 {this.state.id &&
-                    <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
+                    <TouchableHighlight onPress={this.handleDeletePress} style={styles.button}>
                         <Text style={styles.buttonText}>Delete</Text>
                     </TouchableHighlight>
                 }

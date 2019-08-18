@@ -3,6 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
 import { loadDataFile } from '../googleDrive';
+import eventsDB from '../eventsDB';
 
 const styles = StyleSheet.create({
     list: {
@@ -13,9 +14,13 @@ const styles = StyleSheet.create({
 });
 
 class EventList extends Component {
-    state = {
-        apiToken: null,
-        events: []
+    constructor(props) {
+        super(props);
+        this.db = null;
+        this.state = {
+            apiToken: null,
+            events: []
+        };
     }
 
     handleAddEvent = () => {
@@ -29,10 +34,10 @@ class EventList extends Component {
     async componentDidMount() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
+        this.db = new eventsDB(apiToken);
         await this.setState({ apiToken: apiToken });
-        let events = await loadDataFile(apiToken);
-        console.log('events :  ' + JSON.stringify(events));
-        events = events.events.map(e => ({ ...e, date: new Date(e.date) }));
+        let events = await this.db.getEvents();
+        events = events.map(e => ({ ...e, date: new Date(e.date) }));
         await this.setState({ events });
         setInterval(() => {
             this.setState({
