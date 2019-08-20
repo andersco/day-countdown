@@ -8,13 +8,14 @@ export default class eventsDB {
 
     async getEvents() {
         let events = await this.googleDrive.loadDataFile();
-        return events[0].events;
+        return events;
     }
 
     async createEvent({ title, date }) {
         try {
             let events = await this.googleDrive.loadDataFile();
-            events[0].events.push({ "title": title, "date": date, id: uuid() })
+            let id = uuid(); 
+            events[id] = { "title": title, "date": date };
             await this.googleDrive.saveDataFile(events);
         } catch (err) {
             console.log(err);
@@ -23,5 +24,8 @@ export default class eventsDB {
 
     async deleteEvent(id) {
         console.log('deleting ' + id);
+        let events = await this.googleDrive.loadDataFile();
+        delete events[id];
+        await this.googleDrive.saveDataFile(events);
     }
 }

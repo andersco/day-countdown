@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
-import { loadDataFile } from '../googleDrive';
 import eventsDB from '../eventsDB';
 
 const styles = StyleSheet.create({
@@ -24,24 +23,30 @@ class EventList extends Component {
     }
 
     handleAddEvent = () => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken });
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, onGoBack: () => this.populateData() });
     }
 
     handleEditEvent = (id) => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id });
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id, onGoBack: () => this.populateData() });
     }
 
     async componentDidMount() {
+        await this.populateData();
+    }
+
+    async populateData() {
         const { navigation } = this.props;
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
         this.db = new eventsDB(apiToken);
         await this.setState({ apiToken: apiToken });
         let events = await this.db.getEvents();
-        events = events.map(e => ({ ...e, date: new Date(e.date) }));
-        await this.setState({ events });
+        let eventsArray = Object.keys(events).map((key) => {
+            return { id: key, ...events[key], date: new Date(events[key].date) };
+        })
+        await this.setState({ eventsArray });
         setInterval(() => {
             this.setState({
-                events: this.state.events.map(evt => ({
+                events: this.state.eventsArray.map(evt => ({
                     ...evt,
                     timer: Date.now(),
                 })),

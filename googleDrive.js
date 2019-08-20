@@ -13,7 +13,6 @@ export default class googleDrive {
         try {
             let content = [
                 {
-                    "events": []
                 }
             ];
             let file = await this.getFile();
@@ -62,9 +61,7 @@ export default class googleDrive {
             let body = await this.parseAndHandleErrors(data);
             if (body) {
                 body = JSON.parse(body);
-                if (body.length > 0 && body[0].events) {
-                    return body;
-                }
+                return body;
             }
             throw Error("Invalid content in file.");
         } catch (error) {

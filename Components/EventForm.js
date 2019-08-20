@@ -61,11 +61,13 @@ class EventForm extends Component {
 
     handleAddPress = async () => {
         await this.db.createEvent(this.state);
+        this.props.navigation.state.params.onGoBack();
         this.props.navigation.goBack();
     }
 
     handleDeletePress = async () => {
         await this.db.deleteEvent(this.state.id);
+        this.props.navigation.state.params.onGoBack();
         this.props.navigation.goBack();
     }
 
