@@ -11,6 +11,19 @@ export default class eventsDB {
         return events;
     }
 
+    async getEvent(id) {
+        console.log('loading event with id ' + id);
+        let events = await this.googleDrive.loadDataFile();
+        return events[id];
+    }
+
+    async saveEvent(event) {
+        console.log('saving ' + event.id);
+        let events = await this.googleDrive.loadDataFile();
+        events[event.id] = event;
+        await this.googleDrive.saveDataFile(events);
+    }
+
     async createEvent({ title, date }) {
         try {
             let events = await this.googleDrive.loadDataFile();

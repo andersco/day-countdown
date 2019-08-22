@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { formatDateTime, saveEvent } from '../utils';
+import { formatDateTime } from '../utils';
 import eventsDB from '../eventsDB';
 
 const styles = StyleSheet.create({
@@ -43,7 +43,8 @@ class EventForm extends Component {
         this.state = {
             apiToken: null,
             title: null,
-            date: ''
+            date: '',
+            busy: false
         };
     }
 
@@ -53,21 +54,32 @@ class EventForm extends Component {
         this.db = new eventsDB(apiToken);
         id = navigation.getParam('id', '');
         if (id) {
-            console.log('id passed, looking up...');
-            await this.setState({ id: id });
+            await this.setState({ id: id, busy: true });
+            let event = await this.db.getEvent(id);
+            await this.setState({
+                title: event.title,
+                date: event.date,
+                busy: false
+            });
         }
         await this.setState({ apiToken: apiToken });
     }
 
-    handleAddPress = async () => {
-        await this.db.createEvent(this.state);
-        this.props.navigation.state.params.onGoBack();
+    handleSavePress = async () => {
+        await this.setState({ busy: true });
+        if (this.state.id) {
+            await this.db.saveEvent({ "id": this.state.id, "title": this.state.title, "date": this.state.date });
+        } else {
+            await this.db.createEvent({ "title": this.state.title, "date": this.state.date });
+        }
+        await this.props.navigation.state.params.onGoBack();
         this.props.navigation.goBack();
     }
 
     handleDeletePress = async () => {
+        await this.setState({ busy: true });
         await this.db.deleteEvent(this.state.id);
-        this.props.navigation.state.params.onGoBack();
+        await this.props.navigation.state.params.onGoBack();
         this.props.navigation.goBack();
     }
 
@@ -97,7 +109,7 @@ class EventForm extends Component {
                     <TextInput style={styles.text}
                         placeholder="Event title"
                         spellCheck={false}
-                        value={this.state.value}
+                        value={this.state.title}
                         onChangeText={this.handleChangeTitle} />
                     <TextInput style={[styles.text, styles.borderTop]}
                         placeholder="Event date"
@@ -107,7 +119,7 @@ class EventForm extends Component {
                         onFocus={this.handleDatePressed} />
                     <DateTimePicker isVisible={this.state.showDatePicker} mode="datetime" onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
                 </View>
-                <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
+                <TouchableHighlight onPress={this.handleSavePress} style={styles.button}>
                     <Text style={styles.buttonText}>Save</Text>
                 </TouchableHighlight>
                 {this.state.id &&
@@ -115,6 +127,7 @@ class EventForm extends Component {
                         <Text style={styles.buttonText}>Delete</Text>
                     </TouchableHighlight>
                 }
+                {this.state.busy ? (<ActivityIndicator size="large" color="#0000ff" animating={true} />) : null}
             </View>
         );
     }

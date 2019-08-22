@@ -23,11 +23,11 @@ class EventList extends Component {
     }
 
     handleAddEvent = () => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, onGoBack: () => this.populateData() });
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, onGoBack: async () => this.populateData() });
     }
 
     handleEditEvent = (id) => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id, onGoBack: () => this.populateData() });
+        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id, onGoBack: async () => this.populateData() });
     }
 
     async componentDidMount() {
