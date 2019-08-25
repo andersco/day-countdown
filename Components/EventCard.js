@@ -83,10 +83,6 @@ export default function EventCard({ event, onPress }) {
                     <Text style={styles.counterText}>{minutes}</Text>
                     <Text style={styles.counterLabel}>MINUTES</Text>
                 </View>
-                <View style={styles.counter}>
-                    <Text style={styles.counterText}>{seconds}</Text>
-                    <Text style={styles.counterLabel}>SECONDS</Text>
-                </View>
             </View>
         </TouchableOpacity>
     );

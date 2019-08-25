@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
 import eventsDB from '../eventsDB';
@@ -18,7 +18,8 @@ class EventList extends Component {
         this.db = null;
         this.state = {
             apiToken: null,
-            events: []
+            events: [],
+            busy: false
         };
     }
 
@@ -38,24 +39,25 @@ class EventList extends Component {
         const { navigation } = this.props;
         apiToken = navigation.getParam('accessToken', 'NO-accessToken');
         this.db = new eventsDB(apiToken);
-        await this.setState({ apiToken: apiToken });
+        await this.setState({ apiToken: apiToken, busy: true });
         let events = await this.db.getEvents();
         let eventsArray = Object.keys(events).map((key) => {
             return { id: key, ...events[key], date: new Date(events[key].date) };
         })
-        await this.setState({ eventsArray });
+        await this.setState({ events: eventsArray, busy: false });
         setInterval(() => {
             this.setState({
-                events: this.state.eventsArray.map(evt => ({
+                events: this.state.events.map(evt => ({
                     ...evt,
                     timer: Date.now(),
                 })),
             });
-        }, 1000);
+        }, 60000);
     }
 
     render() {
         return [
+            <View key="busyIndicator">{this.state.busy ? (<ActivityIndicator size="large" color="#0000ff" animating={true} />) : null}</View>,
             <FlatList
                 key="flatlist"
                 style={styles.list}

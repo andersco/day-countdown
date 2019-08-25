@@ -91,18 +91,20 @@ class EventForm extends Component {
         this.setState({ showDatePicker: true });
     }
 
-    handleDatePicked = (date) => {
-        this.setState({
+    handleDatePicked = async (date) => {
+        await this.setState({
             date
         });
-        this.handleDateHide();
+        await this.handleDateHide();
     }
 
-    handleDateHide = () => {
-        this.setState({ showDatePicker: false });
+    handleDateHide = async () => {
+        await this.setState({ showDatePicker: false });
     }
 
     render() {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.fieldContainer}>
@@ -117,7 +119,7 @@ class EventForm extends Component {
                         value={formatDateTime(this.state.date.toString())}
                         editable={!this.state.showDatePicker}
                         onFocus={this.handleDatePressed} />
-                    <DateTimePicker isVisible={this.state.showDatePicker} mode="datetime" onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
+                    <DateTimePicker isVisible={this.state.showDatePicker} mode="date" date={today} onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
                 </View>
                 <TouchableHighlight onPress={this.handleSavePress} style={styles.button}>
                     <Text style={styles.buttonText}>Save</Text>
