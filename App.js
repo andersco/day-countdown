@@ -13,7 +13,8 @@ const AppNavigator = createStackNavigator({
   list: {
     screen: EventList,
     navigationOptions: () => ({
-      title: 'Your Events'
+      title: 'Your Events',
+      headerLeft: null
     })
   },
   form: {
