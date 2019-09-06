@@ -1,20 +1,17 @@
 const url = 'https://www.googleapis.com/drive/v3';
 const uploadUrl = 'https://www.googleapis.com/upload/drive/v3';
 const boundaryString = 'countdown_boundary'; // can be anything unique, needed for multipart upload https://developers.google.com/drive/v3/web/multipart-upload
-import uuid from 'uuid';
+import * as SecureStore from 'expo-secure-store';
 
 export default class googleDrive {
-    constructor(apiToken) {
-        this.apiToken = apiToken;
+    async init() {
+        this.apiToken = await SecureStore.getItemAsync('access_token');
     }
 
     // download data file
     async loadDataFile() {
         try {
-            let content = [
-                {
-                }
-            ];
+            let content = {};
             let file = await this.getFile();
             if (file) {
                 let fileId = file.id;

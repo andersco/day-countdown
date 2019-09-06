@@ -41,7 +41,6 @@ class EventForm extends Component {
         super(props);
         this.db = null;
         this.state = {
-            apiToken: null,
             title: null,
             date: '',
             busy: false
@@ -50,8 +49,8 @@ class EventForm extends Component {
 
     async componentDidMount() {
         const { navigation } = this.props;
-        apiToken = navigation.getParam('apiToken', 'NO-accessToken');
-        this.db = new eventsDB(apiToken);
+        this.db = new eventsDB();
+        await this.db.init();
         id = navigation.getParam('id', '');
         if (id) {
             await this.setState({ id: id, busy: true });
@@ -62,7 +61,6 @@ class EventForm extends Component {
                 busy: false
             });
         }
-        await this.setState({ apiToken: apiToken });
     }
 
     handleSavePress = async () => {

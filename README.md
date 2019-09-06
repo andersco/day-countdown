@@ -1,6 +1,13 @@
 # countdown
 A react native countdown application
 * To debug on Android
+  * Create an app on the Google API console: console.developers.google.com
+  * Create `secrets.json` with this content:
+    ```
+    {
+      "androidClientId": "<your-client-id>"
+    }
+    ```
   * Install expo
     ```
     npm install -g expo-cli

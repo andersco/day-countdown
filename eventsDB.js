@@ -2,8 +2,12 @@ import googleDrive from './googleDrive';
 import uuid from 'uuid';
 
 export default class eventsDB {
-    constructor(apiKey) {
-        this.googleDrive = new googleDrive(apiKey);
+    constructor() {
+        this.googleDrive = new googleDrive();
+    }
+
+    async init() {
+        await this.googleDrive.init();
     }
 
     async getEvents() {

@@ -17,18 +17,17 @@ class EventList extends Component {
         super(props);
         this.db = null;
         this.state = {
-            apiToken: null,
             events: [],
             busy: false
         };
     }
 
     handleAddEvent = () => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, onGoBack: async () => this.populateData() });
+        this.props.navigation.navigate('form', { onGoBack: async () => this.populateData() });
     }
 
     handleEditEvent = (id) => {
-        this.props.navigation.navigate('form', { apiToken: this.state.apiToken, id: id, onGoBack: async () => this.populateData() });
+        this.props.navigation.navigate('form', { id: id, onGoBack: async () => this.populateData() });
     }
 
     async componentDidMount() {
@@ -36,14 +35,13 @@ class EventList extends Component {
     }
 
     async populateData() {
-        const { navigation } = this.props;
-        apiToken = navigation.getParam('accessToken', 'NO-accessToken');
-        this.db = new eventsDB(apiToken);
-        await this.setState({ apiToken: apiToken, busy: true });
+        this.db = new eventsDB();
+        await this.db.init();
+        await this.setState({ busy: true });
         let events = await this.db.getEvents();
         let eventsArray = Object.keys(events).map((key) => {
             return { id: key, ...events[key], date: new Date(events[key].date) };
-        })
+        });
         await this.setState({ events: eventsArray, busy: false });
         setInterval(() => {
             this.setState({
