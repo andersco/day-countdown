@@ -1,7 +1,8 @@
 import EventList from './Components/EventList';
 import EventForm from './Components/EventForm';
 import SignIn from './Components/SignIn';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
 const AppNavigator = createStackNavigator({
   signIn: {

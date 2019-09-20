@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Countdown",
-    "slug": "countdown",
+    "name": "Day Countdown",
+    "slug": "daycountdown",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android"
@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "name.scottanderson.daycountdown"
+    },
+    "android": {
+      "package": "name.scottanderson.daycountdown"
     }
   }
 }

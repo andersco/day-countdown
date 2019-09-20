@@ -5,7 +5,8 @@ A react native countdown application
   * Create `secrets.json` with this content:
     ```
     {
-      "androidClientId": "<your-client-id>"
+      "androidClientIdExpo": "<your-client-id-for-expo>",
+      "androidClientIdAndroid": "<your-client-id-for-android>"
     }
     ```
   * Install expo

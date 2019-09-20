@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import LoggedOut from './LoggedOut';
+import * as Constants from 'expo-constants';
 import * as AppAuth from 'expo-app-auth';
 import * as SecureStore from 'expo-secure-store';
-import { androidClientId } from '../secrets.json';
+import { androidClientIdExpo, androidClientIdAndroid } from '../secrets.json';
+
+const isInClient = Constants.default.appOwnership === 'expo';
+
+const clientId = isInClient
+  ? androidClientIdExpo
+  : androidClientIdAndroid;
 
 class SignIn extends Component {
     constructor(props) {
@@ -15,7 +22,7 @@ class SignIn extends Component {
         this.signInConfig = {
             issuer: 'https://accounts.google.com',
             scopes: ['https://www.googleapis.com/auth/drive.appdata'],
-            clientId: androidClientId
+            clientId: clientId
         };
     }
 
