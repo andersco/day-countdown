@@ -7,3 +7,4 @@ npm-debug.*
 *.mobileprovision
 android/.expo
 secrets.json
+*.pem

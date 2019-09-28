@@ -20,9 +20,11 @@ const AppNavigator = createStackNavigator({
   },
   form: {
     screen: EventForm,
-    navigationOptions: () => ({
-      title: 'Add New Event'
-    })
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: navigation.getParam('title', 'Add New Event')
+      };
+    }
   }
 });
 

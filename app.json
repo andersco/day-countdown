@@ -24,10 +24,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "name.scottanderson.daycountdown"
+      "bundleIdentifier": "codes.scottanderson.daycountdown"
     },
     "android": {
-      "package": "name.scottanderson.daycountdown"
+      "package": "codes.scottanderson.daycountdown",
+      "permissions": []
     }
   }
 }

@@ -53,6 +53,7 @@ class EventForm extends Component {
         await this.db.init();
         id = navigation.getParam('id', '');
         if (id) {
+            navigation.setParams({ title: 'Update Event' });
             await this.setState({ id: id, busy: true });
             let event = await this.db.getEvent(id);
             await this.setState({
