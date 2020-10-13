@@ -7,24 +7,24 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^38.0.0",
-    "expo-app-auth": "~9.1.1",
-    "expo-constants": "~9.1.1",
-    "expo-secure-store": "~9.0.1",
+    "expo": "^39.0.0",
+    "expo-app-auth": "~9.2.0",
+    "expo-constants": "~9.2.0",
+    "expo-secure-store": "~9.2.0",
     "moment": "^2.24.0",
-    "react": "16.11.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-action-button": "^2.8.5",
-    "react-native-gesture-handler": "~1.6.0",
+    "react-native-gesture-handler": "~1.7.0",
     "react-native-modal-datetime-picker": "7.5.0",
-    "react-native-reanimated": "~1.9.0",
-    "react-native-screens": "^2.9.0",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-screens": "~2.10.1",
     "react-navigation": "^4.0.6",
     "react-navigation-stack": "^1.7.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "babel-preset-expo": "^8.2.3"
+    "babel-preset-expo": "^8.3.0"
   },
   "private": true
 }
