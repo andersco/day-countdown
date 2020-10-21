@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { formatDateTime } from '../utils';
 import eventsDB from '../eventsDB';
 
@@ -90,15 +90,15 @@ class EventForm extends Component {
         this.setState({ showDatePicker: true });
     }
 
-    handleDatePicked = async (date) => {
-        await this.setState({
-            date
-        });
-        await this.handleDateHide();
-    }
-
-    handleDateHide = async () => {
-        await this.setState({ showDatePicker: false });
+    handleDatePicked = async (event, date) => {
+        if (date) {
+            await this.setState({
+                date: date,
+                showDatePicker: false
+            });
+        } else {
+            await this.setState({ showDatePicker: false });
+        }
     }
 
     render() {
@@ -118,7 +118,9 @@ class EventForm extends Component {
                         value={formatDateTime(this.state.date.toString())}
                         editable={!this.state.showDatePicker}
                         onFocus={this.handleDatePressed} />
-                    <DateTimePicker isVisible={this.state.showDatePicker} mode="date" date={today} onConfirm={this.handleDatePicked} onCancel={this.handleDateHide} />
+                    {this.state.showDatePicker && (
+                        <DateTimePicker mode="date" value={today} onChange={this.handleDatePicked} />
+                    )}
                 </View>
                 <TouchableHighlight onPress={this.handleSavePress} style={styles.button}>
                     <Text style={styles.buttonText}>Save</Text>
