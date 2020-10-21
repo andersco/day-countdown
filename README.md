@@ -1,4 +1,4 @@
-# countdown
+# day-countdown
 A react native countdown application
 * To debug on Android
   * Create an app on the Google API console: console.developers.google.com

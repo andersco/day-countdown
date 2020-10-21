@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, View, ActivityIndicator, Button } from 'react-native';
 import EventCard from './EventCard';
-import ActionButton from 'react-native-action-button';
 import eventsDB from '../eventsDB';
 
 const styles = StyleSheet.create({
@@ -63,7 +62,7 @@ class EventList extends Component {
                 renderItem={({ item }) => <EventCard event={item} onPress={this.handleEditEvent} />}
                 keyExtractor={item => item.id}
             />,
-            <ActionButton key="fab" onPress={this.handleAddEvent} buttonColor="rgba(231,76,60,1)" />
+            <Button title="Add" key="fab" onPress={this.handleAddEvent} color="#48BBEC" />
         ];
     }
 }
