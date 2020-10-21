@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "codes.scottanderson.daycountdown",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": []
     }
   }
