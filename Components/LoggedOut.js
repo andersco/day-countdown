@@ -17,8 +17,8 @@ export default class LoggedOut extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Sign in with your Google account to sync saved items to your Google Drive.</Text>
-                <Button title="Sign In With Google" onPress={this.props.signIn} />
+                <Text style={styles.text}>Sign in to sync your saved items to the cloud.</Text>
+                <Button title="Sign In" onPress={this.props.signIn} />
             </View >
         );
     }

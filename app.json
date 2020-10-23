@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "codes.scottanderson.daycountdown",
-      "versionCode": 3,
+      "versionCode": 4,
       "permissions": []
     }
   }
